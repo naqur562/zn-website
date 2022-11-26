@@ -1,0 +1,42 @@
+<%- include("partials/cmsheader") %>
+<div style="margin-top: -150px"></div>
+
+
+
+<div class="container-fluid event-finder">
+
+    <div class="container">
+
+        <form action="/addevent" method="post">
+            <div class="col text-center" style="color: gray;">
+                <h3 style="color: black;"><strong>Add Event</strong></h3>
+                <br>
+                <form action="/login" method="post">
+                  <div class="form-floating mb-3">
+                    <input type="input" class="form-control" name="eventName" id="eventName" placeholder="Event Name">
+                    <label for="eventName">Event Name</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="date" class="form-control" name="eventDate" id="eventDate" placeholder="Event Date" value="">
+                    <label for="eventDate">Event Date</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="input" class="form-control" name="eventLink" id="eventLink" placeholder="Event Link">
+                    <label for="eventLink">Facebook Link</label>
+                  </div>
+                  <div class="d-grid">
+                    <button class="btn btn-danger" type="submit"><strong>Add</strong></button>
+                  </div>
+                </form>
+            </div>
+  
+        </form>
+
+        </div>
+    </div>
+
+</div>
+
+
+<%- include("partials/footer") %>
+

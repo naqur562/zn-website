@@ -1,0 +1,35 @@
+<%- include("partials/cmsheader") %>
+
+
+<div class="container login">
+
+    <div class="row justify-content-md-center">
+      
+        <div class="col text-center">
+            <h3><strong>Admin Log In</strong></h3>
+            <br>
+            <form action="/login" method="post">
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                <label for="email">Email</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                <label for="password">Password</label>
+              </div>
+              <div class="d-grid">
+                <button class="btn btn-danger" type="submit"><strong>Submit</strong></button>
+              </div>
+            </form>
+          </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+<%- include("partials/footer") %>

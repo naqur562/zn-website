@@ -1,0 +1,74 @@
+<%- include("partials/header") %>
+
+<%- include("partials/navbar") %>
+
+<%- include("partials/banner") %>
+
+<%- include("partials/collage") %>
+
+<%- include("partials/signup") %>
+
+
+<div class="container-fluid event-finder bg-danger" id="upcoming-events">
+  
+    <div class="container">
+  
+      <div class="row">
+        <div class="col text-center">
+          <h1><strong>Upcoming Events</strong></h1>
+        </div>
+      </div>
+
+      <div class="row events">
+
+        <div class="col-4 text-center">
+            <p><strong>Event Date</strong></p>
+        </div>
+        <div class="col-5 text-center">
+            <p><strong>Event Name</strong></p>
+        </div>
+        <div class="col-3 text-center">
+            <p><strong>Actions</strong></p>
+        </div>
+
+        <hr>
+
+
+        <% events.forEach(function(event){ %>
+            
+            <div class="col-4 text-center">
+                <h3><%= event.date %></h3>
+            </div>
+            <div class="col-5 text-center">
+                <h3><%= event.name %></h3>
+            </div>
+            <div class="col-3 text-center">
+                <button class="btn btn-danger" onclick="parent.open('<%= event.link %>')" >More Info</button>
+                <button class="btn btn-outline-danger" onclick="window.location.href='#contact-us'">Book Booth</button>
+            </div>
+            
+            <hr>
+        <% }); %>
+
+
+
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<%- include("partials/aboutus") %>
+
+
+<%- include("partials/collage2") %>
+
+
+<%- include("partials/contactus") %>
+
+
+
+<%- include("partials/footer") %>
+
