@@ -119,10 +119,6 @@ app.post("/addemail" , function(req,res){
 
             const url2 = "https://" + process.env.MAILCHIMPDC + ".api.mailchimp.com/3.0/lists/" + listID
 
-            console.log(url2)
-
-            console.log(req.body.fName + " " + req.body.lName)
-
             const data2 = {
                 members: [{
                     email_address: req.body.email,
@@ -143,7 +139,6 @@ app.post("/addemail" , function(req,res){
             const request2 = https.request(url2, options2, function(response2){
                 response2.on("data", function(data){
                     
-                        console.log(response2.statusCode)
                         res.redirect("/")
         
                 })
