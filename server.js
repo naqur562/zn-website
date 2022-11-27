@@ -29,7 +29,7 @@ app.use(passport.session()) //<-- tells app to use passport to set up session an
 
 // ------------------------------------------------------------
 
-mongoose.connect("mongodb://localhost:27017/znDB")
+mongoose.connect(process.env.MONGOURL)
 
 const eventsSchema = new mongoose.Schema({
     name: String,
