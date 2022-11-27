@@ -3,6 +3,7 @@ const express = require("express")
 const ejs = require("ejs")
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
+const https = require('node:https');
 
 const session = require("express-session")
 const passport = require("passport")
@@ -12,6 +13,7 @@ const app = express()
 app.set('view engine', 'ejs');
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended: true}));
+
 
 
 // ------------------------------------------------------------ Authentication
@@ -56,13 +58,23 @@ passport.deserializeUser(User.deserializeUser()); //<-- break user data encaseme
 
 app.get("/", function(req,res){
 
-    Event.find(function(err, events){
-        if (err) {
-            console.log(err)
-        } else{
-            res.render("home", {events})
-        }
+    const url = "https://" + process.env.MAILCHIMPDC + ".api.mailchimp.com/3.0/lists?fields=lists.name?offset=0&count=1000"
+
+    const options = {
+        method: "GET",
+        auth: process.env.MAILCHIMPKEY
+    }
+
+   const request = https.get(url, options, function(response){
+        response.on("data", function(data){
+            listNames = JSON.parse(data)
+            Event.find(function(err, events){
+                res.render("home", {events:events, listNames: listNames.lists})
+            })
+        })
     })
+
+    
 })
 
 app.get("/admin", function(req, res){
@@ -86,7 +98,69 @@ app.get("/cms", function(req, res){
     }
 })
 
+app.post("/addemail" , function(req,res){
+    
+    const fName = req.body.fName
+    const lName = req.body.lName
+
+    const url1 = "https://" + process.env.MAILCHIMPDC + ".api.mailchimp.com/3.0/lists?fields=lists.name,lists.id?offset=0&count=1000"
+
+    const options1 = {
+        method: "GET",
+        auth: process.env.MAILCHIMPKEY
+    }
+
+   const request = https.get(url1, options1, function(response){
+        response.on("data", function(data){
+            const responseData = JSON.parse(data)
+            const listInfo = responseData.lists
+
+            var listID = listInfo.find(x => x.name === req.body.cityName).id;
+
+            const url2 = "https://" + process.env.MAILCHIMPDC + ".api.mailchimp.com/3.0/lists/" + listID
+
+            console.log(url2)
+
+            console.log(req.body.fName + " " + req.body.lName)
+
+            const data2 = {
+                members: [{
+                    email_address: req.body.email,
+                    status: "subscribed",
+                    merge_fields: {
+                        FNAME: fName,
+                        LNAME: lName
+                        }
+                    }]
+            }
+
+            const jsonData = JSON.stringify(data2)
+
+            const options2 = {
+                method: "POST",
+                auth: process.env.MAILCHIMPKEY,
+            }
+            const request2 = https.request(url2, options2, function(response2){
+                response2.on("data", function(data){
+                    
+                        console.log(response2.statusCode)
+                        res.redirect("/")
+        
+                })
+            })
+            request2.write(jsonData);
+            request2.end();
+
+        })
+    })
+
+
+
+})
+
+
 // Post Routs
+
 
 app.post("/login", function(req, res) {
     const newUser = new User({
