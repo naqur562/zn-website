@@ -15,7 +15,6 @@ app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-
 // ------------------------------------------------------------ Authentication
 
 app.use(session({ // <--call and set up session, pass options (recommended options from dev), must be placed here
@@ -137,10 +136,17 @@ app.post("/addemail" , function(req,res){
                 auth: process.env.MAILCHIMPKEY,
             }
             const request2 = https.request(url2, options2, function(response2){
+
                 response2.on("data", function(data){
-                    
-                        res.redirect("/")
-        
+
+                if (response2.statusCode == 200){
+                    res.render("success")
+                } else {
+                    res.render("failure")
+                }
+    
+
+
                 })
             })
             request2.write(jsonData);

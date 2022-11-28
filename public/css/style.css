@@ -180,7 +180,13 @@ footer {
   width: 300px;
 }
 
-
+.success {
+  margin-top: 150px;
+  color: black;
+}
+.success p{
+  font-size: large;
+}
 
 @media screen and (max-width: 991px) {
   .tagline{
