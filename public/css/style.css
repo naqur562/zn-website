@@ -179,3 +179,22 @@ footer {
   margin-top: 150px;
   width: 300px;
 }
+
+
+@media screen and (max-width: 991px) {
+  .tagline{
+    padding-top: 220px;
+  }
+}
+
+@media screen and (max-width: 432px) {
+  .tagline{
+    padding-top: 190px;
+  }
+}
+
+@media screen and (max-width: 398px) {
+  .tagline{
+    padding-top: 150px;
+  }
+}
