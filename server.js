@@ -33,6 +33,7 @@ mongoose.connect(process.env.MONGOURL)
 const eventsSchema = new mongoose.Schema({
     name: String,
     date: String,
+    sortDate: Date,
     link: String
 })
 const userSchema = new mongoose.Schema({
@@ -68,7 +69,16 @@ app.get("/", function(req,res){
         response.on("data", function(data){
             listNames = JSON.parse(data)
             Event.find(function(err, events){
-                res.render("home", {events:events, listNames: listNames.lists})
+                
+                const today = new Date()
+
+                const sortedEvents = events.sort(
+                  (objA, objB) => Number(objA.sortDate) - Number(objB.sortDate),
+                );
+
+                const filteredEvents = sortedEvents.filter(x => x.sortDate >= today)
+
+                res.render("home", {events:filteredEvents, listNames: listNames.lists})
             })
         })
     })
@@ -88,7 +98,13 @@ app.get("/cms", function(req, res){
             if (err) {
                 console.log(err)
             } else{
-                res.render("cms", {events: events})
+                const today = new Date()
+                const sortedEvents = events.sort(
+                  (objA, objB) => Number(objA.sortDate) - Number(objB.sortDate),
+                );
+                const filteredEvents = sortedEvents.filter(x => x.sortDate >= today)
+
+                res.render("cms", {events: filteredEvents})
             }
         })
 
@@ -216,6 +232,7 @@ app.post("/addevent", function(req, res){
     const newEvent = new Event({
         name: req.body.eventName,
         date: eventDateFormatted,
+        sortDate: eventDate,
         link: req.body.eventLink
     })
     
